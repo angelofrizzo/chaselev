@@ -1,0 +1,21 @@
+{
+  "version": 6,
+  "configurePresets": [
+    { "name": "release", "binaryDir": "build",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" } },
+    { "name": "debug", "binaryDir": "build-debug",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" } },
+    { "name": "tsan", "binaryDir": "build-tsan",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug", "CHASELEV_TSAN": "ON" } }
+  ],
+  "buildPresets": [
+    { "name": "release", "configurePreset": "release" },
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "tsan", "configurePreset": "tsan" }
+  ],
+  "testPresets": [
+    { "name": "release", "configurePreset": "release", "output": { "outputOnFailure": true } },
+    { "name": "debug", "configurePreset": "debug", "output": { "outputOnFailure": true } },
+    { "name": "tsan", "configurePreset": "tsan", "output": { "outputOnFailure": true } }
+  ]
+}
