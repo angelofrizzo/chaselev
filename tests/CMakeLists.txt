@@ -5,7 +5,7 @@ FetchContent_Declare(Catch2
   GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(chaselev_tests deque_test.cpp ring_test.cpp)
+add_executable(chaselev_tests deque_test.cpp ring_test.cpp scheduler_test.cpp)
 target_link_libraries(chaselev_tests PRIVATE chaselev::chaselev Catch2::Catch2WithMain)
 
 include(Catch)

@@ -11,9 +11,29 @@ A work-stealing task scheduler in C++23, benchmarked against oneTBB, OpenMP, and
 
 - [x] `Ring<T>` — power-of-two circular buffer over unbounded logical indices (`include/chaselev/ring.hpp`)
 - [x] `Deque<T>` — Chase–Lev deque with the weak-memory orderings of Lê et al., PPoPP 2013; growable (`include/chaselev/deque.hpp`)
-- [ ] Scheduler: per-worker deques, randomized stealing, `spawn`/`sync`
+- [x] `Scheduler` / `TaskGroup` — per-worker deques, randomized stealing, Cilk-style `spawn`/`sync`; the waiting worker keeps stealing instead of blocking (`include/chaselev/scheduler.hpp`)
 - [ ] Benchmarks vs oneTBB, OpenMP, Taskflow (`bench/`)
 - [ ] Task graphs with dependencies, priorities
+
+## Usage
+
+```cpp
+#include <chaselev/chaselev.hpp>
+
+std::int64_t fib(std::int64_t n) {
+  if (n < 2) return n;
+  std::int64_t a;
+  chaselev::TaskGroup g;
+  g.spawn([&] { a = fib(n - 1); });
+  std::int64_t b = fib(n - 2);
+  g.sync();
+  return a + b;
+}
+
+chaselev::Scheduler s(8);           // the caller of run() is worker 0
+std::int64_t r;
+s.run([&] { r = fib(30); });
+```
 
 ## Results
 
